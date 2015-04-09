@@ -43,6 +43,18 @@ public class BackpackRec {
 		test1(sizes, values);
 		test2(sizes, values);
 		test3(sizes, values);
+		
+		maxItem = 20;
+		int BackpackSize = 23;
+		int BigSizes[] = new int[maxItem];
+		int BigValues[] = new int[maxItem];
+		
+		for (int i = 0; i < maxItem; i++) {
+			BigSizes[i] = (int)(Math.random()*10+2);
+			BigValues[i] = (int)(Math.random()*10+1);
+		}
+		System.out.println("Backpack Size: " + BackpackSize + ", Amount of Items: " + maxItem 
+							+ ", Backpack Value: " + packRec(BigSizes, BigValues, BackpackSize));
 	}
 
 	public static void test1(int[] sizes, int[] values) {
