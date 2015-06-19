@@ -1,22 +1,30 @@
 public class BackpackRec {
 
-	public static int packRecAux(int sizes[], int values[], int spaceLeft, int currentItem) {
+	public static int packRecAux(int sizes[], int values[], int spaceLeft, int currentItem, int[][] LookUpTable) {
 
 		if (currentItem < 0) {
 			return 0;
 		}
 
 		if (sizes[currentItem] > spaceLeft) {
-			return packRecAux(sizes, values, spaceLeft, currentItem-1);
+			return packRecAux(sizes, values, spaceLeft, currentItem-1, LookUpTable);
 		}
 
-		return Math.max(packRecAux(sizes, values, spaceLeft, currentItem-1), packRecAux(sizes, values, spaceLeft-sizes[currentItem], currentItem-1)+values[currentItem]);
+		return Math.max(packRecAux(sizes, values, spaceLeft, currentItem-1, LookUpTable), 
+						packRecAux(sizes, values, spaceLeft-sizes[currentItem], currentItem-1, LookUpTable)+values[currentItem]);
 	}
 
 	public static int packRec(int sizes[], int values[], int size) {
-		int lastItem = sizes.length-1;
+		int LastItem = sizes.length-1;
+		int[][] LookUpTable = prepareLookupTable(sizes, size);
 
-		return packRecAux(sizes, values, size, lastItem);
+		return packRecAux(sizes, values, size, LastItem, LookUpTable);
+	}
+	
+	public static int[][] prepareLookupTable (int[] sizes, int size) {
+		
+		int[][] LookUpTable = new int[1][size];
+		return LookUpTable;
 	}
 
 	public static void main(String args[]) {
@@ -42,7 +50,6 @@ public class BackpackRec {
 
 		test1(sizes, values);
 		test2(sizes, values);
-		test3(sizes, values);
 		
 		maxItem = 20;
 		int BackpackSize = 23;
@@ -53,7 +60,7 @@ public class BackpackRec {
 			BigSizes[i] = (int)(Math.random()*10+2);
 			BigValues[i] = (int)(Math.random()*10+1);
 		}
-		System.out.println("Backpack Size: " + BackpackSize + ", Amount of Items: " + maxItem 
+		System.out.println("(3) Backpack Size: " + BackpackSize + ", Amount of Items: " + maxItem 
 							+ ", Backpack Value: " + packRec(BigSizes, BigValues, BackpackSize));
 	}
 
@@ -69,29 +76,21 @@ public class BackpackRec {
 
 		int bestValue = packRec(sizes, values, initialBackpackSize);
 		if (bestValue == 5) {
-			System.out.println("At best the values in the backpack amount to:  " + bestValue);
+			System.out.println("(1) At best the values in the backpack amount to:  " + bestValue);
 		}
 		else {
 			System.out.println("(1) FAILURE!");
 		}
 	}
-
-	public static void test2(int[] sizes, int[] values) {
-		if (packRecAux(sizes, values, 0, 2) > 0) {
-			System.out.println("(2) FAILURE!");
-		} else {
-			System.out.println("(2) SUCCESS!");
-		}
-	}
 	
-	public static void test3(int[] sizes, int[] values) {
+	public static void test2(int[] sizes, int[] values) {
 		int initialBackpackSize = 4;
 		int bestValue = packRec(sizes, values, initialBackpackSize);
 		if (bestValue == 4) {
-			System.out.println("(3) SUCCESS!");
+			System.out.println("(2) SUCCESS!");
 		}
 		else {
-			System.out.println("(3) FAILURE!");
+			System.out.println("(2) FAILURE!");
 		}
 	}
 }
